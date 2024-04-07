@@ -14,7 +14,10 @@ struct Worker {
 struct WorkerCreationError;
 
 impl Worker {
-    pub fn build(id: usize, receiver: Arc<Mutex<mpsc::Receiver<Job>>>) -> Result<Worker, WorkerCreationError> {
+    pub fn build(
+        id: usize,
+        receiver: Arc<Mutex<mpsc::Receiver<Job>>>,
+    ) -> Result<Worker, WorkerCreationError> {
         let thread = thread::spawn(move || loop {
             let job = receiver.lock().unwrap().recv().unwrap();
             println!("Worker {id} got a job; executing...");
